@@ -33,9 +33,9 @@ class Encryptor(commands.Cog):
         """Smart decode"""
         mode = (None, None, None)  # func, name, decode?
         if text.startswith('b64:'):
-            mode = (base64.b64decode, 'b', True)
+            mode = (base64.b64decode, 'b64', True)
         elif text.startswith('b32:'):
-            mode = (base64.b32decode, 'b', True)
+            mode = (base64.b32decode, 'b32', True)
         if mode[1] is None:
             return await ctx.send('Cannot find text type!')
         await ctx.send('Decoded text:\n```\n'+(mode[0](text[4:].encode()).decode()
@@ -43,13 +43,13 @@ class Encryptor(commands.Cog):
 
     @commands.command()
     async def encode(self, ctx, *, text: str):
-        """Smart decode"""
+        """Smart encode"""
         mode = (None, None, None)  # func, name, decode?
         if text.startswith('b64:'):
-            mode = (base64.b64encode, 'b', True)
+            mode = (base64.b64encode, 'b32', True)
         elif text.startswith('b32:'):
-            mode = (base64.b32encode, 'b', True)
+            mode = (base64.b32encode, 'b64', True)
         if mode[1] is None:
             return await ctx.send('Cannot find text type!')
-        await ctx.send('Encoded text:\n```\n'+(mode[0](text.encode()).decode()
-                                               if mode[2] else mode[0](text.encode()))+'\n```')
+        await ctx.send('Encoded text:\n```\n'+mode[1]+':'+(mode[0](text[4:].encode()).decode()
+                                               if mode[2] else mode[0](text[4:].encode()))+'\n```')
