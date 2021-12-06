@@ -31,7 +31,7 @@ class Encryptor(commands.Cog):
         await ctx.send(out)
 
     @commands.command()
-    async def aes(self, ctx, key, *, text: str):
+    async def aes(self, ctx, key, text: str):
         """AES256 and BASE64 given text with key
             :param text
             BASE64 encoded text
@@ -59,7 +59,7 @@ class Encryptor(commands.Cog):
         elif text.startswith('b64:'):
             cipher = AES.new(key, AES.MODE_EAX)
             nonce = cipher.nonce
-            ciphertext, tag = cipher.encrypt_and_digest(base64.b64decode(text))
+            ciphertext, tag = cipher.encrypt_and_digest(base64.b64decode(text[4:]))
             out = 'AES256:\n```\naes:' + base64.b64encode(nonce).decode() + ':' \
                   + base64.b64encode(tag).decode() + ':' \
                   + base64.b64encode(ciphertext).decode() + '\n```'
