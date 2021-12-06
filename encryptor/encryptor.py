@@ -44,6 +44,7 @@ class Encryptor(commands.Cog):
         if text.startswith('aes:'):
             try:
                 lst = text.split(':')
+                await ctx.send(str(lst))
                 nonce = base64.b64decode(lst[1])
                 tag = base64.b64decode(lst[2])
                 ciphertext = base64.b64decode(lst[3])
