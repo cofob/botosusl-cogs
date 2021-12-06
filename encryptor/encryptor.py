@@ -53,8 +53,8 @@ class Encryptor(commands.Cog):
                     cipher.verify(tag)
                 except ValueError:
                     return await ctx.send('Message failed tag verification')
-            except:
-                return await ctx.send('Message format invalid')
+            except Exception as e:
+                return await ctx.send('Message format invalid ' + str(e))
             out = 'BASE64:\n```\n' + base64.b64encode(plaintext).decode() + '\n```'
         elif text.startswith('b64:'):
             cipher = AES.new(key, AES.MODE_EAX)
