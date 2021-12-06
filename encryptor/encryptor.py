@@ -46,9 +46,9 @@ class Encryptor(commands.Cog):
         """Smart encode"""
         mode = (None, None, None)  # func, name, decode?
         if text.startswith('b32:'):
-            mode = (base64.b64encode, 'b32', True)
+            mode = (base64.b32encode, 'b32', True)
         elif text.startswith('b64:'):
-            mode = (base64.b32encode, 'b64', True)
+            mode = (base64.b64encode, 'b64', True)
         if mode[1] is None:
             return await ctx.send('Cannot find text type!')
         await ctx.send('Encoded text:\n```\n'+mode[1]+':'+(mode[0](text[4:].encode()).decode()
