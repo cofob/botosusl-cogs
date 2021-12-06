@@ -31,7 +31,7 @@ class Encryptor(commands.Cog):
         await ctx.send(out)
 
     @commands.command()
-    async def aes(self, ctx, key, text: str):
+    async def aes(self, ctx, key, *, text: str):
         """AES256 and BASE64 given text with key
             :param text
             BASE64 encoded text
@@ -56,16 +56,17 @@ class Encryptor(commands.Cog):
                     return await ctx.send('Message failed tag verification')
             except Exception as e:
                 return await ctx.send('Message format invalid ' + str(e))
-            out = 'BASE64:\n```\n' + base64.b64encode(plaintext).decode() + '\n```'
-        elif text.startswith('b64:'):
+            out = 'BASE64:\n```\nb64:' + base64.b64encode(plaintext).decode()\
+                  + '\n```\n```\nplain:' + plaintext.decode(errors='replace') + '\n```'
+        if not text.startswith('b64:'):
+            text = 'b64:' + base64.b64encode(text.encode()).decode()
+        if text.startswith('b64:'):
             cipher = AES.new(key, AES.MODE_EAX)
             nonce = cipher.nonce
             ciphertext, tag = cipher.encrypt_and_digest(base64.b64decode(text[4:]))
             out = 'AES256:\n```\naes:' + base64.b64encode(nonce).decode() + ':' \
                   + base64.b64encode(tag).decode() + ':' \
                   + base64.b64encode(ciphertext).decode() + '\n```'
-        else:
-            return await ctx.send('Message text must be in base64!')
         await ctx.send(out)
 
     @commands.command()
