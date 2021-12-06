@@ -13,4 +13,4 @@ class HashTools(commands.Cog):
     @commands.command()
     async def sha256(self, ctx, *, text: str):
         """SHA256 hash"""
-        await ctx.send(hashlib.sha256(text.encode()))
+        await ctx.send(hashlib.sha256(text.encode()).hexdigest())
