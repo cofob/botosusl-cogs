@@ -44,7 +44,6 @@ class Encryptor(commands.Cog):
         if text.startswith('aes:'):
             try:
                 lst = text.split(':')
-                await ctx.send(str(lst))
                 nonce = base64.b64decode(lst[1])
                 tag = base64.b64decode(lst[2])
                 ciphertext = base64.b64decode(lst[3])
@@ -55,7 +54,7 @@ class Encryptor(commands.Cog):
                 except ValueError:
                     return await ctx.send('Message failed tag verification')
             except Exception as e:
-                return await ctx.send('Message format invalid ' + str(e))
+                return await ctx.send('Message format invalid')
             out = 'BASE64:\n```\nb64:' + base64.b64encode(plaintext).decode()\
                   + '\n```\n```\nplain:' + plaintext.decode(errors='replace') + '\n```'
         if not text.startswith('b64:'):
