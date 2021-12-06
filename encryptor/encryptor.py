@@ -38,8 +38,8 @@ class Encryptor(commands.Cog):
             mode = (base64.b32decode, 'b', True)
         if mode[1] is None:
             return await ctx.send('Cannot find text type!')
-        await ctx.send('Decoded text:\n```\n'+(mode[0](text.encode()).decode()
-                                               if mode[2] else mode[0](text.encode()))+'\n```')
+        await ctx.send('Decoded text:\n```\n'+(mode[0](text[4:].encode()).decode()
+                                               if mode[2] else mode[0](text[4:].encode()))+'\n```')
 
     @commands.command()
     async def encode(self, ctx, *, text: str):
