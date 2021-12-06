@@ -38,7 +38,7 @@ class Encryptor(commands.Cog):
         """
         key = key.encode()
         if len(key) < 16:
-            key = key + (b'0' * (16-len(key)))
+            key = key + (b'0' * (16 - len(key)))
         if len(key) > 16:
             key = key[:16]
         if text.startswith('aes:'):
@@ -55,8 +55,8 @@ class Encryptor(commands.Cog):
                     return await ctx.send('Message failed tag verification')
             except Exception as e:
                 return await ctx.send('Message format invalid')
-            out = 'BASE64:\n```\nb64:' + base64.b64encode(plaintext).decode()\
-                  + '\n```\n```\nplain:' + plaintext.decode(errors='replace') + '\n```'
+            return await ctx.send('BASE64:\n```\nb64:' + base64.b64encode(plaintext).decode() \
+                                  + '\n```\n```\nplain:' + plaintext.decode(errors='replace') + '\n```')
         if not text.startswith('b64:'):
             text = 'b64:' + base64.b64encode(text.encode()).decode()
         if text.startswith('b64:'):
