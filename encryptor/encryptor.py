@@ -36,13 +36,18 @@ class Encryptor(commands.Cog):
             :param text
             BASE64 encoded text
         """
+        key = key.encode()
+        if len(key) < 16:
+            key = key + (b'0' * (16-len(key)))
+        if len(key) > 16:
+            key = key[:16]
         if text.startswith('aes:'):
             try:
                 lst = text.split(':')
                 nonce = base64.b64decode(lst[1])
                 tag = base64.b64decode(lst[2])
                 ciphertext = base64.b64decode(lst[3])
-                cipher = AES.new(key.encode(), AES.MODE_EAX, nonce=nonce)
+                cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
                 plaintext = cipher.decrypt(ciphertext)
                 try:
                     cipher.verify(tag)
@@ -52,7 +57,7 @@ class Encryptor(commands.Cog):
                 return await ctx.send('Message format invalid')
             out = 'BASE64:\n```\n' + base64.b64encode(plaintext).decode() + '\n```'
         elif text.startswith('b64:'):
-            cipher = AES.new(key.encode(), AES.MODE_EAX)
+            cipher = AES.new(key, AES.MODE_EAX)
             nonce = cipher.nonce
             ciphertext, tag = cipher.encrypt_and_digest(base64.b64decode(text))
             out = 'AES256:\n```\naes:' + base64.b64encode(nonce).decode() + ':' \
